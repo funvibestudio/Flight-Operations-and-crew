@@ -96,8 +96,8 @@ let departureICAO = "";
 let arrivalICAO = "";
 let currentScreen = document.getElementById('welcome');
 let ambientMusicPlaying = false;
-let ambientSound = new Audio('audios/music.mp3');
-let boardingSound = new Audio('audios/noise.mp3');
+let ambientSound = new Audio('music.mp3');
+let boardingSound = new Audio('noise.mp3');
 let announcementAudio = new Audio();
 
 function showScreen(screenId) {
@@ -164,7 +164,7 @@ function openFlightControls(departureICAO, arrivalICAO) {
 }
 
 function playAnnouncement(type) {
-    announcementAudio.src = `audios/${type}.wav`;
+    announcementAudio.src = `${type}.wav`;
     announcementAudio.play();
 }
 
