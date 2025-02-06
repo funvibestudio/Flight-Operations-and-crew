@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Operations & Crew</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f2f2f2;
+}
+
+#app {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.screen {
+    display: none;
+}
+
+input, select, button {
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="welcome" class="screen" style="display: block;">
+            <input type="text" id="name" placeholder="Votre nom">
+            <select id="airline">
+                <option value="Air France">Air France</option>
+                <option value="EasyJet">EasyJet</option>
+                <option value="Lufthansa">Lufthansa</option>
+                <option value="KLM">KLM</option>
+            </select>
+            <button onclick="onStart()">Commencer</button>
+        </div>
+        <div id="flightPlan" class="screen" style="display: none;">
+            <input type="text" id="departureICAO" placeholder="ICAO Départ">
+            <input type="text" id="arrivalICAO" placeholder="ICAO Arrivée">
+            <select id="planeType">
+                <option value="Boeing 737">Boeing 737</option>
+                <option value="Airbus A320">Airbus A320</option>
+                <option value="Embraer E190">Embraer E190</option>
+            </select>
+            <button onclick="startFlight()">Démarrer le vol</button>
+        </div>
+        <div id="flightControls" class="screen" style="display: none;">
+            <div id="flightInfo"></div>
+            <button onclick="playAnnouncement('safety')">Annonce Sécurité</button>
+            <button onclick="playAnnouncement('boarding')">Annonce Embarquement</button>
+            <button onclick="playAnnouncement('pushback')">Annonce Pushback</button>
+            <button onclick="playAnnouncement('climb')">Annonce Montée</button>
+            <button onclick="playAnnouncement('cruise')">Annonce Croisière</button>
+            <button onclick="playAnnouncement('descent')">Annonce Descente</button>
+            <button onclick="playAnnouncement('landing')">Annonce Atterrissage</button>
+            <button onclick="startBoarding()">Démarrer l'embarquement</button>
+        </div>
+        <div id="boarding" class="screen" style="display: none;">
+            <div id="boardingInfo"></div>
+            <button onclick="toggleAmbientMusic()" id="ambientMusicButton">Activer la musique d'ambiance</button>
+        </div>
+    </div>
+    <script>
+const planeCapacity = {
+    "Boeing 737": 150,
+    "Airbus A320": 180,
+    "Embraer E190": 100
+};
+
+let departureICAO = "";
+let arrivalICAO = "";
+let currentScreen = document.getElementById('welcome');
+let ambientMusicPlaying = false;
+let ambientSound = new Audio('audios/music.mp3');
+let boardingSound = new Audio('audios/noise.mp3');
+let announcementAudio = new Audio();
+
+function showScreen(screenId) {
+    currentScreen.style.display = 'none';
+    currentScreen = document.getElementById(screenId);
+    currentScreen.style.display = 'block';
+}
+
+function onStart() {
+    const userName = document.getElementById('name').value;
+    const airline = document.getElementById('airline').value;
+
+    if (!userName) {
+        alert("Veuillez entrer votre nom.");
+        return;
+    }
+
+    updateBackgroundColor(airline);
+    showScreen('flightPlan');
+}
+
+function updateBackgroundColor(airline) {
+    const airlineColors = {
+        "Air France": "#051040",
+        "EasyJet": "#ff6600",
+        "Lufthansa": "#f9ba00",
+        "KLM": "#00A1DE"
+    };
+
+    const textColor = airline === "Air France" ? "white" : "black";
+
+    document.body.style.backgroundColor = airlineColors[airline] || "#FFFFFF";
+    document.getElementById('app').style.backgroundColor = airlineColors[airline] || "#FFFFFF";
+    document.getElementById('app').style.color = textColor;
+}
+
+function startFlight() {
+    departureICAO = document.getElementById('departureICAO').value;
+    arrivalICAO = document.getElementById('arrivalICAO').value;
+    const airline = document.getElementById('airline').value;
+    const plane = document.getElementById('planeType').value;
+
+    if (!departureICAO || !arrivalICAO) {
+        alert("Veuillez entrer les ICAO de départ et d'arrivée.");
+        return;
+    }
+
+    if (!isValidICAO(departureICAO) || !isValidICAO(arrivalICAO)) {
+        alert("Les ICAO doivent être composés de 4 lettres.");
+        return;
+    }
+
+    alert(`Vol lancé depuis ${departureICAO} vers ${arrivalICAO}.\nCompagnie : ${airline} | Avion : ${plane}`);
+    openFlightControls(departureICAO, arrivalICAO);
+}
+
+function isValidICAO(icao) {
+    return icao.length === 4 && /^[A-Z]{4}$/.test(icao);
+}
+
+function openFlightControls(departureICAO, arrivalICAO) {
+    document.getElementById('flightInfo').innerText = `Départ: ${departureICAO} | Arrivée: ${arrivalICAO}`;
+    showScreen('flightControls');
+}
+
+function playAnnouncement(type) {
+    announcementAudio.src = `audios/${type}.wav`;
+    announcementAudio.play();
+}
+
+function startBoarding() {
+    const totalPassengers = planeCapacity[document.getElementById('planeType').value];
+    let remainingPassengers = totalPassengers;
+    let passengersEmbarked = 0;
+
+    function updatePassengerCount() {
+        if (remainingPassengers > 0) {
+            passengersEmbarked++;
+            remainingPassengers--;
+            document.getElementById('boardingInfo').innerText = `Embarqués: ${passengersEmbarked}\nRestants: ${remainingPassengers}`;
+            setTimeout(updatePassengerCount, 400);
+        } else {
+            boardingSound.pause();
+            ambientSound.pause();
+            openFlightControls(departureICAO, arrivalICAO);
+        }
+    }
+
+    boardingSound.play();
+    showScreen('boarding');
+    updatePassengerCount();
+}
+
+function toggleAmbientMusic() {
+    if (ambientMusicPlaying) {
+        ambientSound.pause();
+        document.getElementById('ambientMusicButton').innerText = "Activer la musique d'ambiance";
+    } else {
+        ambientSound.play();
+        ambientSound.loop = true;
+        document.getElementById('ambientMusicButton').innerText = "Désactiver la musique d'ambiance";
+    }
+    ambientMusicPlaying = !ambientMusicPlaying;
+}
+
+    </script>
+</body>
+</html>
