@@ -4,47 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flight Operations & Crew</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-    background-color: #f2f2f2;
-}
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f2f2f2;
+        }
 
-#app {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
+        #app {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 80%;
+            max-width: 1200px;
+        }
 
-.screen {
-    display: none;
-}
+        .screen {
+            display: none;
+        }
 
-input, select, button {
-    margin: 10px 0;
-    padding: 10px;
-    font-size: 16px;
-}
+        input, select {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+            width: calc(100% - 22px);
+        }
 
-button {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 10px;
+        }
 
-button:hover {
-    background-color: #0056b3;
-}
+        button:hover {
+            background-color: #0056b3;
+        }
 
+        .card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px;
+            text-align: left;
+            transition: transform 0.2s;
+            cursor: pointer;
+            width: calc(33.333% - 40px); /* Ajustement pour trois cartes par ligne */
+            box-sizing: border-box;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card i {
+            font-size: 36px;
+            margin-right: 10px;
+            color: #007BFF;
+        }
+
+        .card-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
@@ -71,14 +117,87 @@ button:hover {
         </div>
         <div id="flightControls" class="screen" style="display: none;">
             <div id="flightInfo"></div>
-            <button onclick="playAnnouncement('safety')">Annonce Sécurité</button>
-            <button onclick="playAnnouncement('boarding')">Annonce Embarquement</button>
-            <button onclick="playAnnouncement('pushback')">Annonce Pushback</button>
-            <button onclick="playAnnouncement('climb')">Annonce Montée</button>
-            <button onclick="playAnnouncement('cruise')">Annonce Croisière</button>
-            <button onclick="playAnnouncement('descent')">Annonce Descente</button>
-            <button onclick="playAnnouncement('landing')">Annonce Atterrissage</button>
-            <button onclick="startBoarding()">Démarrer l'embarquement</button>
+            <div class="card" onclick="playAnnouncement('safety')">
+                <div class="card-content">
+                    <i class="fas fa-shield-alt"></i>
+                    <div>
+                        <div class="card-title">Annonce Sécurité</div>
+                        <div class="card-description">Informations de sécurité pour les passagers.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" onclick="playAnnouncement('boarding')">
+                <div class="card-content">
+                    <i class="fas fa-plane-departure"></i>
+                    <div>
+                        <div class="card-title">Annonce Embarquement</div>
+                        <div class="card-description">Instructions pour l'embarquement.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" onclick="playAnnouncement('pushback')">
+                <div class="card-content">
+                    <i class="fas fa-plane"></i>
+                    <div>
+                        <div class="card-title">Annonce Pushback</div>
+                        <div class="card-description">Préparation au départ.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" onclick="playAnnouncement('climb')">
+                <div class="card-content">
+                    <i class="fas fa-arrow-up"></i>
+                    <div>
+                        <div class="card-title">Annonce Montée</div>
+                        <div class="card-description">Instructions pendant la montée.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" onclick="playAnnouncement('cruise')">
+                <div class="card-content">
+                    <i class="fas fa-cloud"></i>
+                    <div>
+                        <div class="card-title">Annonce Croisière</div>
+                        <div class="card-description">Informations pendant le vol.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" onclick="playAnnouncement('descent')">
+                <div class="card-content">
+                    <i class="fas fa-arrow-down"></i>
+                    <div>
+                        <div class="card-title">Annonce Descente</div>
+                        <div class="card-description">Préparation à l'atterrissage.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" onclick="playAnnouncement('landing')">
+                <div class="card-content">
+                    <i class="fas fa-plane-arrival"></i>
+                    <div>
+                        <div class="card-title">Annonce Atterrissage</div>
+                        <div class="card-description">Instructions pour l'atterrissage.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" onclick="startBoarding()">
+                <div class="card-content">
+                    <i class="fas fa-users"></i>
+                    <div>
+                        <div class="card-title">Démarrer l'embarquement</div>
+                        <div class="card-description">Commencer l'embarquement des passagers.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card" onclick="fuel()">
+                <div class="card-content">
+                    <i class="fas fa-gas-pump"></i>
+                    <div>
+                        <div class="card-title">Calcul du kérosène</div>
+                        <div class="card-description">Calculer la quantité de kérosène nécessaire.</div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div id="boarding" class="screen" style="display: none;">
             <div id="boardingInfo"></div>
@@ -86,123 +205,122 @@ button:hover {
         </div>
     </div>
     <script>
-const planeCapacity = {
-    "Boeing 737": 150,
-    "Airbus A320": 180,
-    "Embraer E190": 100
-};
+        const planeCapacity = {
+            "Boeing 737": 150,
+            "Airbus A320": 180,
+            "Embraer E190": 100
+        };
 
-let departureICAO = "";
-let arrivalICAO = "";
-let currentScreen = document.getElementById('welcome');
-let ambientMusicPlaying = false;
-let ambientSound = new Audio('music.mp3');
-let boardingSound = new Audio('noise.mp3');
-let announcementAudio = new Audio();
+        let departureICAO = "";
+        let arrivalICAO = "";
+        let currentScreen = document.getElementById('welcome');
+        let ambientMusicPlaying = false;
+        let ambientSound = new Audio('audios/music.mp3');
+        let boardingSound = new Audio('audios/noise.mp3');
+        let announcementAudio = new Audio();
 
-function showScreen(screenId) {
-    currentScreen.style.display = 'none';
-    currentScreen = document.getElementById(screenId);
-    currentScreen.style.display = 'block';
-}
+        function showScreen(screenId) {
+            currentScreen.style.display = 'none';
+            currentScreen = document.getElementById(screenId);
+            currentScreen.style.display = 'block';
+        }
 
-function onStart() {
-    const userName = document.getElementById('name').value;
-    const airline = document.getElementById('airline').value;
+        function onStart() {
+            const userName = document.getElementById('name').value;
+            const airline = document.getElementById('airline').value;
 
-    if (!userName) {
-        alert("Veuillez entrer votre nom.");
-        return;
-    }
+            if (!userName) {
+                alert("Veuillez entrer votre nom.");
+                return;
+            }
 
-    updateBackgroundColor(airline);
-    showScreen('flightPlan');
-}
+            updateBackgroundColor(airline);
+            showScreen('flightPlan');
+        }
 
-function updateBackgroundColor(airline) {
-    const airlineColors = {
-        "Air France": "#051040",
-        "EasyJet": "#ff6600",
-        "Lufthansa": "#f9ba00",
-        "KLM": "#00A1DE"
-    };
+        function updateBackgroundColor(airline) {
+            const airlineColors = {
+                "Air France": "#051040",
+                "EasyJet": "#ff6600",
+                "Lufthansa": "#f9ba00",
+                "KLM": "#00A1DE"
+            };
 
-    const textColor = airline === "Air France" ? "white" : "black";
+            const textColor = airline === "Air France" ? "white" : "black";
 
-    document.body.style.backgroundColor = airlineColors[airline] || "#FFFFFF";
-    document.getElementById('app').style.backgroundColor = airlineColors[airline] || "#FFFFFF";
-    document.getElementById('app').style.color = textColor;
-}
+            document.body.style.backgroundColor = airlineColors[airline] || "#FFFFFF";
+            document.getElementById('app').style.backgroundColor = airlineColors[airline] || "#FFFFFF";
+            document.getElementById('app').style.color = textColor;
+        }
 
-function startFlight() {
-    departureICAO = document.getElementById('departureICAO').value;
-    arrivalICAO = document.getElementById('arrivalICAO').value;
-    const airline = document.getElementById('airline').value;
-    const plane = document.getElementById('planeType').value;
+        function startFlight() {
+            departureICAO = document.getElementById('departureICAO').value;
+            arrivalICAO = document.getElementById('arrivalICAO').value;
+            const airline = document.getElementById('airline').value;
+            const plane = document.getElementById('planeType').value;
 
-    if (!departureICAO || !arrivalICAO) {
-        alert("Veuillez entrer les ICAO de départ et d'arrivée.");
-        return;
-    }
+            if (!departureICAO || !arrivalICAO) {
+                alert("Veuillez entrer les ICAO de départ et d'arrivée.");
+                return;
+            }
 
-    if (!isValidICAO(departureICAO) || !isValidICAO(arrivalICAO)) {
-        alert("Les ICAO doivent être composés de 4 lettres.");
-        return;
-    }
+            if (!isValidICAO(departureICAO) || !isValidICAO(arrivalICAO)) {
+                alert("Les ICAO doivent être composés de 4 lettres.");
+                return;
+            }
 
-    alert(`Vol lancé depuis ${departureICAO} vers ${arrivalICAO}.\nCompagnie : ${airline} | Avion : ${plane}`);
-    openFlightControls(departureICAO, arrivalICAO);
-}
-
-function isValidICAO(icao) {
-    return icao.length === 4 && /^[A-Z]{4}$/.test(icao);
-}
-
-function openFlightControls(departureICAO, arrivalICAO) {
-    document.getElementById('flightInfo').innerText = `Départ: ${departureICAO} | Arrivée: ${arrivalICAO}`;
-    showScreen('flightControls');
-}
-
-function playAnnouncement(type) {
-    announcementAudio.src = `${type}.wav`;
-    announcementAudio.play();
-}
-
-function startBoarding() {
-    const totalPassengers = planeCapacity[document.getElementById('planeType').value];
-    let remainingPassengers = totalPassengers;
-    let passengersEmbarked = 0;
-
-    function updatePassengerCount() {
-        if (remainingPassengers > 0) {
-            passengersEmbarked++;
-            remainingPassengers--;
-            document.getElementById('boardingInfo').innerText = `Embarqués: ${passengersEmbarked}\nRestants: ${remainingPassengers}`;
-            setTimeout(updatePassengerCount, 400);
-        } else {
-            boardingSound.pause();
-            ambientSound.pause();
+            alert(`Vol lancé depuis ${departureICAO} vers ${arrivalICAO}.\nCompagnie : ${airline} | Avion : ${plane}`);
             openFlightControls(departureICAO, arrivalICAO);
         }
-    }
 
-    boardingSound.play();
-    showScreen('boarding');
-    updatePassengerCount();
-}
+        function isValidICAO(icao) {
+            return icao.length === 4 && /^[A-Z]{4}$/.test(icao);
+        }
 
-function toggleAmbientMusic() {
-    if (ambientMusicPlaying) {
-        ambientSound.pause();
-        document.getElementById('ambientMusicButton').innerText = "Activer la musique d'ambiance";
-    } else {
-        ambientSound.play();
-        ambientSound.loop = true;
-        document.getElementById('ambientMusicButton').innerText = "Désactiver la musique d'ambiance";
-    }
-    ambientMusicPlaying = !ambientMusicPlaying;
-}
+        function openFlightControls(departureICAO, arrivalICAO) {
+            document.getElementById('flightInfo').innerText = `Départ: ${departureICAO} | Arrivée: ${arrivalICAO}`;
+            showScreen('flightControls');
+        }
 
+        function playAnnouncement(type) {
+            announcementAudio.src = `audios/${type}.wav`;
+            announcementAudio.play();
+        }
+
+        function startBoarding() {
+            const totalPassengers = planeCapacity[document.getElementById('planeType').value];
+            let remainingPassengers = totalPassengers;
+            let passengersEmbarked = 0;
+
+            function updatePassengerCount() {
+                if (remainingPassengers > 0) {
+                    passengersEmbarked++;
+                    remainingPassengers--;
+                    document.getElementById('boardingInfo').innerText = `Embarqués: ${passengersEmbarked}\nRestants: ${remainingPassengers}`;
+                    setTimeout(updatePassengerCount, 400);
+                } else {
+                    boardingSound.pause();
+                    ambientSound.pause();
+                    openFlightControls(departureICAO, arrivalICAO);
+                }
+            }
+
+            boardingSound.play();
+            showScreen('boarding');
+            updatePassengerCount();
+        }
+
+        function toggleAmbientMusic() {
+            if (ambientMusicPlaying) {
+                ambientSound.pause();
+                document.getElementById('ambientMusicButton').innerText = "Activer la musique d'ambiance";
+            } else {
+                ambientSound.play();
+                ambientSound.loop = true;
+                document.getElementById('ambientMusicButton').innerText = "Désactiver la musique d'ambiance";
+            }
+            ambientMusicPlaying = !ambientMusicPlaying;
+        }
     </script>
 </body>
 </html>
